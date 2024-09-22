@@ -1,0 +1,39 @@
+body {
+    background-color: rgb(33, 33, 33);
+    color: rgb(209, 209, 209);
+}
+
+.navbar-custom {
+    background-color: transparent !important;
+}
+
+.navbar-custom .nav-link {
+    color: rgb(209, 209, 209);
+}
+
+.full-height {
+    height: 80vh;
+}
+
+.large-title {
+    font-size: 5rem;
+}
+
+.select-playlists-custom {
+    margin-top: 15vh;
+}
+
+.merge-row {
+    height: 50vh;
+    margin-top: 10vh;
+}
+
+.col-padding {
+    padding-left: 5rem;
+    padding-right: 5rem;
+}
+
+.button-row {
+    padding-left: 8rem;
+    padding-right: 8rem;
+}

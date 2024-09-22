@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+data_collection/__pycache__/
+recommendations/__pycache__/
+website/__pycache__/
+.DS_Store
+.env
