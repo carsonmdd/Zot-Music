@@ -18,6 +18,7 @@ def about():
 
 @views.route('/merge', methods=['GET', 'POST'])
 def merge():
+    tracks = []
     if request.method == 'POST':
         '''
         - Get two playlist ids
@@ -28,16 +29,16 @@ def merge():
         id1 = request.form['playlist-1']
         id2 = request.form['playlist-2']
 
-        uri_set = set()
-        p1_uris = get_uris(id1)
-        p2_uris = get_uris(id2)
-        uri_set.update(p1_uris)
-        uri_set.update(p2_uris)
+        p1_tracks = _get_tracks(id1)
+        p2_tracks = _get_tracks(id2)
+        all_tracks = p1_tracks + p2_tracks
+        uris_set = set()
+        for track in all_tracks:
+            if track['uri'] not in uris_set:
+                uris_set.add(track['uri'])
+                tracks.append(track)
 
-        user_id = get_user_id()
-        playlist_id = create_playlist(user_id)
-
-        add_uris(playlist_id, list(uri_set))
+        session['uris'] = list(uris_set)
 
     if 'access_token' not in session:
         return redirect(url_for('auth.login'))
@@ -47,10 +48,10 @@ def merge():
     data = get(session['access_token'], '/me/playlists')
     playlists = data['items']
 
-    return render_template('merge.html', playlists=playlists)
+    return render_template('merge.html', playlists=playlists, tracks=tracks)
 
-def get_uris(id):
-    uris = []
+def _get_tracks(id):
+    tracks = []
 
     url = f'{API_BASE_URL}/playlists/{id}/tracks'
     offset = 0
@@ -62,27 +63,33 @@ def get_uris(id):
             response.raise_for_status()
         
         data = response.json()
-        uris.extend([item['track']['uri'] for item in data['items']])
+        tracks.extend([item['track'] for item in data['items']])
 
         url = data['next']
         offset += 50
 
-    return uris
+    return tracks
 
-def get_user_id():
+@views.route('/save-to-profile', methods=['POST'])
+def save_to_profile():
+    user_id = _get_user_id()
+    playlist_id = _create_playlist(user_id, request.form['title'])
+
+    _add_tracks(playlist_id, session['uris'])
+
+    return redirect('/merge')
+
+def _get_user_id():
     data = get(session['access_token'], '/me')
     return data['id']
 
-def create_playlist(user_id):
-    data = {
-        'name': 'Coolest playlist',
-        'description': 'This is the coolest playlist ever!'
-    }
+def _create_playlist(user_id, title):
+    data = {'name': title}
     response_data = post(session['access_token'], f'/users/{user_id}/playlists', data)
 
     return response_data['id']
 
-def add_uris(id, uris):
+def _add_tracks(id, uris):
     for i in range(0, len(uris), 100):
         data = {'uris': uris[i:i+100]}
         post(session['access_token'], f'/playlists/{id}/tracks', data)

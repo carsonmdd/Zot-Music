@@ -36,19 +36,20 @@
         </div>
         <!-- RIGHT SIDE -->
         <div class="col col-padding align-self-center border-start">
-            <div class="row mb-5">
-                <h2 contenteditable="True">New playlist</h2>
-                <ul class="list-group px-5">
-                    <li class="list-group-item">Song 1</li>
-                    <li class="list-group-item">Song 2</li>
-                    <li class="list-group-item">Song 3</li>
-                    <li class="list-group-item">Song 4</li>
-                    <li class="list-group-item">Song 5</li>
-                </ul>
-            </div>
-            <div class="row button-row">
-                <button type="button" class="btn btn-secondary">Save to profile</button>
-            </div>
+            <h3>Merged playlist:</h3>
+            <form action="/save-to-profile" method="POST">
+                <div class="row mb-5">
+                    <input class="mb-5" type="text" name="title" value="New Playlist">
+                    <ul class="list-group px-5 scrollable-list-group">
+                        {% for track in tracks %}
+                            <li class="list-group-item">{{ track['name'] }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="row button-row">
+                    <button type="submit" class="btn btn-secondary">Save to profile</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

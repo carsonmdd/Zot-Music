@@ -37,3 +37,9 @@ body {
     padding-left: 8rem;
     padding-right: 8rem;
 }
+
+.scrollable-list-group {
+    max-height: 20rem;
+    min-height: 20rem;
+    overflow-y: auto;
+}
