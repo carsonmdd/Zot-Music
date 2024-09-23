@@ -51,7 +51,7 @@ class TrackFetcher:
             for item in album_tracks['items']:
                 metadata = {
                     'name': item['name'],
-                    'artists': ','.join([artist['name'] for artist in item['artists']])
+                    'artists': ', '.join([artist['name'] for artist in item['artists']])
                 }
                 tracks_metadata[item['id']] = metadata
 

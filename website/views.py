@@ -125,7 +125,7 @@ def recommendations():
         if 'search-query' in request.form:
             search_tracks = search(request.form['search-query'])
         elif 'selected-track' in request.form:
-            rec = Recommender()
+            rec = Recommender(session['access_token'])
             rec_tracks = rec.recommend(request.form['selected-track'])
 
     return render_template('recommendations.html', search_tracks=search_tracks, rec_tracks=rec_tracks)

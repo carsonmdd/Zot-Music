@@ -1,4 +1,5 @@
 import sqlite3
+from fetch_tracks import TrackFetcher
 
 def create_database():
     conn = sqlite3.connect('tracks.db')
@@ -89,6 +90,13 @@ def get_all():
     return items
 
 if __name__ == '__main__':
+    # tf = TrackFetcher()
+    # tracks = tf.get_all_tracks()
+
+    # create_database()
+    # add_many(tracks)
+    
     items = get_all()
+
     for item in items:
         print(item)
