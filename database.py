@@ -87,3 +87,8 @@ def get_all():
     conn.close()
 
     return items
+
+if __name__ == '__main__':
+    items = get_all()
+    for item in items:
+        print(item)

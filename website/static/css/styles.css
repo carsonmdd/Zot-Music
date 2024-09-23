@@ -23,9 +23,13 @@ body {
     margin-top: 15vh;
 }
 
-.merge-row {
-    height: 50vh;
+.custom-row {
     margin-top: 10vh;
+    margin-bottom: 10vh;
+}
+
+.custom-col {
+    height: 40rem;
 }
 
 .col-padding {
@@ -38,8 +42,8 @@ body {
     padding-right: 8rem;
 }
 
-.scrollable-list-group {
-    max-height: 20rem;
-    min-height: 20rem;
+.custom-list-group {
+    height: 20rem;
     overflow-y: auto;
+
 }

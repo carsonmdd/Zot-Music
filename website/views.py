@@ -1,8 +1,9 @@
-from flask import Blueprint, session, redirect, jsonify, render_template, url_for, request
+from flask import Blueprint, session, redirect, render_template, url_for, request
 import requests
 from datetime import datetime
 
 from utils import get, post
+from recommender import Recommender
 
 views = Blueprint('views', __name__)
 
@@ -94,8 +95,16 @@ def _add_tracks(id, uris):
         data = {'uris': uris[i:i+100]}
         post(session['access_token'], f'/playlists/{id}/tracks', data)
 
-@views.route('/recommend', methods=['GET', 'POST'])
-def recommend():
+@views.route('/get-recommendations', methods=['POST'])
+def get_recommendations():
+    uri = request.form['selected-track']
+    r = Recommender(uri)
+    tracks = r.recommend()
+
+    redirect('/recommendations')
+
+@views.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
     '''
     - User types in track name to search
     - Form submits post request with track name to search for
@@ -110,4 +119,26 @@ def recommend():
     # rec = Recommender()
     # rec.get_recommendations(track_data)
 
-    return render_template('recommend.html')
+    search_tracks = []
+    rec_tracks = []
+    if request.method == 'POST':
+        if 'search-query' in request.form:
+            search_tracks = search(request.form['search-query'])
+        elif 'selected-track' in request.form:
+            rec = Recommender()
+            rec_tracks = rec.recommend(request.form['selected-track'])
+
+    return render_template('recommendations.html', search_tracks=search_tracks, rec_tracks=rec_tracks)
+
+def search(search_query):
+    endpoint = '/search'
+    params = {
+        'q': search_query,
+        'type': 'track',
+    }
+    data = get(session['access_token'], endpoint, params)
+    tracks = data['tracks']['items']
+    for track in tracks:
+        track['artists'] = ', '.join([artist['name'] for artist in track['artists']])
+
+    return tracks

@@ -34,7 +34,7 @@ class TrackFetcher:
 
     def _fetch_new_releases(self):
         '''
-        Returns list of dicts of track_data
+        Returns list of dicts of tracks_data
         '''
         self._check_access_token()
         tracks_data = []
@@ -62,10 +62,11 @@ class TrackFetcher:
             ids_string = ','.join(ids_list)
             params = {'ids': ids_string}
             response = self._get(f'/audio-features', params)
-            batch_data = response['audio_features']
 
+            batch_data = response['audio_features']
             for e in batch_data:
                 e.update(tracks_metadata[e['id']])
+                
             tracks_data.extend(batch_data)
         
         return tracks_data
