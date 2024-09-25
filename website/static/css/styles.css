@@ -19,6 +19,15 @@ body {
     font-size: 5rem;
 }
 
+.home-paragraph {
+    font-size: 2rem;
+}
+
+.about-paragraph {
+    font-size: 2rem;
+    width: 50%
+}
+
 .select-playlists-custom {
     margin-top: 15vh;
 }
