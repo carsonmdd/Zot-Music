@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-from utils import get, post, base64_encode
+from utils import base64_encode
 
 auth = Blueprint('auth', __name__)
 

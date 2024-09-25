@@ -14,8 +14,6 @@ class Recommender:
         similarities = self._compute_similarities(s_track, db_tracks)
 
         similarities.sort(key=lambda x: x[1], reverse=True)
-        # for similarity in similarities[:5]:
-        #     print(similarity)
         top_5_tracks = [similarity[0] for similarity in similarities[:5]]
         
         return top_5_tracks
